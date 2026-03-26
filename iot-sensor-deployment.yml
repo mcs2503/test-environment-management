@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-sensor
+  namespace: iot-simulators
+spec:
+  replicas: 3  # each pod has represents one simulated sensor
+  selector:
+    matchLabels:
+      app: iot-sensor
+  template:
+    metadata:
+      labels:
+        app: iot-sensor
+    spec:
+      containers:
+      - name: sensor
+        image: mcs2503/iot-sensor:latest
+        command: ["python", "iot_sensor.py"]
+        args: [ "--broker", "mqtt-service.iot-slice.svc.cluster.local", "--port", "1883", "--sensor_id", "$(POD_NAME)", "--interval", "5"]  # the sensor name will be the pod name which is unique
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name  # use the pod ID as the pod name
+        resources:
+          requests:
+            cpu: "50m" # 0.05 CPU
+            memory: "64Mi" # 64MB RAM
+          limits:
+            cpu: "100" # 0.1 CPU
+            memory: "128Mi" # 128MB RAM
