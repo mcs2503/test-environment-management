@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-stream
+  namespace: iot-simulators
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-stream
+  template:
+    metadata:
+      labels:
+        app: video-stream
+    spec:
+      containers:
+      - name: video-stream-container
+        image: mcs2503/video-stream:latest

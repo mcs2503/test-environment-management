@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nginx-container
-        image: nginx
+        image: mcs2503/custom-nginx-rtmp:latest
         resources:
           requests:
             memory: "128Mi"
@@ -24,7 +24,16 @@ spec:
             memory: "256Mi"
             cpu: "500m"
         ports:
+        - containerPort: 1935
+          name: rtmp
         - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: hls-storage
+          mountPath: /tmp/hls
+      volumes:
+      - name: hls-storage
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -36,7 +45,11 @@ spec:
   selector:
     app: video-server
   ports:
-  - protocol: TCP
+  - name: http
+    protocol: TCP
     port: 8080
     targetPort: 80
-
+  - name: rtmp
+    protocol: TCP
+    port: 1935
+    targetPort: 1935
