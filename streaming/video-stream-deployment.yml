@@ -16,3 +16,7 @@ spec:
       containers:
       - name: video-stream-container
         image: mcs2503/video-stream:latest
+        envFrom:
+        - configMapRef:
+            name: ffmpeg-config
+
