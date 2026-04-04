@@ -16,6 +16,13 @@ spec:
       containers:
       - name: video-stream-container
         image: mcs2503/video-stream:latest
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: RTMP_SERVER
+          value: "rtmp://nginx-service.streaming-slice.svc.cluster.local:1935/live/$(POD_NAME)"
         envFrom:
         - configMapRef:
             name: ffmpeg-config
