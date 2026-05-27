@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ffmpeg-config
-  namespace: iot-simulators
+  namespace: streaming-simulator
 data:
   RESOLUTION: "960:540"
   PRESET: "ultrafast"

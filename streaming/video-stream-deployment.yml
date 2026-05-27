@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: video-stream
-  namespace: iot-simulators
+  namespace: streaming-simulator
 spec:
   replicas: 1
   selector:
